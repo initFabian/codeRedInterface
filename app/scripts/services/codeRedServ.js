@@ -6,29 +6,36 @@
 
 app.factory('codeRED', function ($firebase, $q, FIREBASE_URL) {
   var ref = new Firebase(FIREBASE_URL);
-  var attendees = $firebase(ref.child('attendees')).$asArray();
-  var documents = $firebase(ref.child('documents')).$asArray();
-  var sponsorDocuments = $firebase(ref.child('sponsor_documents')).$asArray();
 
   var codeRED = {
     getAttendees: function() {
+
       //Get all attendees
+      var attendees = $firebase(ref.child('attendees')).$asArray();
+
       return attendees;
     },
     create: function (post) {
+
       //Add attendee
+      var attendees = $firebase(ref.child('attendees')).$asArray();
       return attendees.$add(post);
     },
     get: function (postId) {
+
       //Get individual attendee
       return $firebase(ref.child('attendees').child(postId)).$asObject();
     },
     getDocuments: function() {
+
       //Get Documents
+      var documents = $firebase(ref.child('documents')).$asArray();
       return documents;
     },
     getSponsorDocs: function() {
+
       //Get Sponsor documents
+      var sponsorDocuments = $firebase(ref.child('sponsor_documents')).$asArray();
       return sponsorDocuments;
     }
   };

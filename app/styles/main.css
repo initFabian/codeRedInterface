@@ -61,11 +61,20 @@ html,
   .databaseIcon {
     color: #fec324;
   }
+  .databaseIcon:hover {
+  	color: #FFDA77;
+  }
   .documentIcon {
     color: #4285f4;
   }
+  .documentIcon:hover {
+  	color: #95BAF9;
+  }
   .sponsorIcon {
     color: #960c22;
+  }
+  .sponsorIcon:hover {
+  	color: #CE465B;
   }
   .checkInIcon {
     color: #f45a66;
@@ -158,6 +167,29 @@ html,
     justify-content : center;
   }
 
+  .LoginRegisterBox {
+  	margin-left: 0px;
+	padding: 40px;
+	background: #ecf0f1;
+	border-radius: 10px;
+  }
+
+  .LoginRegisterButton {
+  	width:100%;
+  }
+
+  .formDivider {
+  	height: 1px;
+  	margin: 20px auto;
+  	width: 95%;
+  	padding-bottom: 0;
+  	border-top: 1px solid #ccc;
+  }
+
+  .loginRegisterTitle,
+  .featurette-heading {
+  	color: #737373;
+  }
 /*
 
 ========================================================================== */

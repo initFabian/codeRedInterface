@@ -20,7 +20,11 @@ app.controller('HomeCtrl', function ($scope, $location, $http, $timeout, Auth, c
 	}
 
 	$scope.searchQuery = '';
+	$scope.attendees = codeRED.getAttendees();
+	$scope.googleDocs = codeRED.getDocuments();
+	$scope.sponsorDocs = codeRED.getSponsorDocs();
 
+	$scope.initAnimation = true;
 	$scope.isDashboard = true;
 	$scope.isDatabase = false;
 	$scope.isDocuments = false;
@@ -50,6 +54,7 @@ app.controller('HomeCtrl', function ($scope, $location, $http, $timeout, Auth, c
 	return {
 		templateUrl: 'views/templates/dashboard.html'
 	};
+
 })
 .directive('databasePage', function() {
 	//Database directive has its own controller so the animations can
@@ -59,19 +64,16 @@ app.controller('HomeCtrl', function ($scope, $location, $http, $timeout, Auth, c
 		controller: function($scope, $timeout, codeRED) {
 
 			$scope.initAnimation = true;
-
+			$scope.attendees = [];
 			//Add delay so user can see initial animation
 			$timeout(function () {
-				$scope.attendees = [];
 				$scope.attendees = codeRED.getAttendees();
-
-			},515);
+			},750);
 
 			$timeout(function () {
-
 				//remove slow animation to make searching faster
 				$scope.initAnimation = false;
-			},516);
+			},850);
 		}
 	};
 })
@@ -81,10 +83,11 @@ app.controller('HomeCtrl', function ($scope, $location, $http, $timeout, Auth, c
 		controller: function($scope, $timeout, codeRED) {
 
 			$scope.initAnimation = true;
+			$scope.googleDocs = [];
 
 			//Add delay so user can see initial animation
 			$timeout(function () {
-				$scope.googleDocs = [];
+
 				$scope.googleDocs = codeRED.getDocuments();
 
 			},750);
@@ -93,7 +96,7 @@ app.controller('HomeCtrl', function ($scope, $location, $http, $timeout, Auth, c
 
 				//remove slow animation to make searching faster
 				$scope.initAnimation = false;
-			},751);
+			},850);
 		}
 	};
 })
@@ -103,19 +106,18 @@ app.controller('HomeCtrl', function ($scope, $location, $http, $timeout, Auth, c
 		controller: function($scope, $timeout, codeRED) {
 
 			$scope.initAnimation = true;
-
+			$scope.sponsorDocs = [];
 			//Add delay so user can see initial animation
 			$timeout(function () {
-				$scope.sponsorDocs = [];
-				$scope.sponsorDocs = codeRED.getSponsorDocs();
 
+				$scope.sponsorDocs = codeRED.getSponsorDocs();
 			},750);
 
 			$timeout(function () {
 
 				//remove slow animation to make searching faster
 				$scope.initAnimation = false;
-			},751);
+			},850);
 		}
 	};
 });

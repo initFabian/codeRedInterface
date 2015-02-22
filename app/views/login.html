@@ -1,13 +1,17 @@
 <div class="container login">
 	<div class="row vertical-center" style="height: 100%">
-		<div class="col-sm-6 col-md-4 col-md-offset-4" style="margin-left: 0px">
+		<div class="col-sm-6 col-md-4 col-md-offset-4 LoginRegisterBox">
 			<div class="auth-forms ">
-				<h2>Log In</h2>
-				<form ng-submit="login()">
-					<p ng-show="error" class="text-danger">{{ error }}</p>
-					<input type="email" ng-model="user.email" placeholder="Email" class="form-control"><br>
-					<input type="password" ng-model="user.password" placeholder="Password" class="form-control"><br>
-					<input type="submit" value="Log in" class="btn btn-primary" />
+				<p ng-show="error" class="alert alert-danger">{{ error }}</p>
+				<h2 class="loginRegisterTitle">Log In</h2>
+				<form name="loginUser" ng-submit="loginUser.$valid && login()" novalidate>
+					<input type="email" ng-model="user.email" placeholder="Email" class="form-control" required>
+					<br>
+					<input type="password" ng-model="user.password" placeholder="Password" class="form-control">
+					<br>
+					<input type="submit" value="Log in" class="btn btn-success LoginRegisterButton" />
+					<hr class="formDivider center">
+					<a class="btn btn-primary LoginRegisterButton" href="#/register">Register</a>
 				</form>
 			</div>
 		</div>
