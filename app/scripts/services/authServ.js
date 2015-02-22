@@ -3,21 +3,60 @@
  * use helper methods to authenticate users, create users, and login/logout users
  */
 
-app.factory('Auth', function ($firebaseSimpleLogin, FIREBASE_URL, $rootScope, $firebase, $q) {
+ app.factory('Auth', function (FIREBASE_URL, $rootScope, $firebase, $q) {
   var ref = new Firebase(FIREBASE_URL);
-  var auth = $firebaseSimpleLogin(ref);
 
   var Auth = {
+    user: {},
+
+    login: function (user) {
+      var deferred = $q.defer();
+      //Login user using 'password' authenticate
+      ref.authWithPassword({
+        email    : user.email,
+        password : user.password
+      }, function(error, authData) {
+        if (error) {
+          //return callback with error
+          error.error = true;
+          deferred.reject(error);
+        } else {
+          console.log('Authenticated successfully with payload:', authData);
+          //return callback with authData
+          deferred.resolve(authData);
+        }
+      });
+
+      return deferred.promise;
+    },
     register: function (user) {
-      return auth.$createUser(user.email, user.password);
+      // return ref.createUser(user.email, user.password);
+      var deferred = $q.defer();
+
+      ref.createUser({
+        email: user.email,
+        password: user.password
+      }, function(error, userData) {
+        if (error) {
+          //return callback with error
+          error.error = true;
+          // callback(error);
+          deferred.reject(error);
+        } else {
+          console.log('Successfully created user account with uid:', userData.uid);
+          //return callback with userData
+          deferred.resolve(userData);
+          // callback(userData);
+        }
+      });
+      return deferred.promise;
     },
     createProfile: function (user) {
       /*jshint camelcase: false */
 
       //Add user to 'Users' node in firebase
       var profile = {
-        email: user.email,
-        md5_hash: user.md5_hash
+        email: user.email
       };
 
       var profileRef = $firebase(ref.child('profile'));
@@ -31,55 +70,33 @@ app.factory('Auth', function ($firebaseSimpleLogin, FIREBASE_URL, $rootScope, $f
         oldPassword : user.oldPassword,
         newPassword : user.newPassword
       }, function(error) {
-        if (error === null) {
-          console.log('Password changed successfully');
-          deferred.resolve({status:'Password changed successfully'});
+        if (error) {
+          deferred.reject(error);
         } else {
-          console.log('Error changing password:', error);
-          deferred.resolve({status:'Password changed successfully'});
+          deferred.resolve('Password changed successfully');
         }
       });
 
       return deferred.promise;
     },
-    login: function (user) {
-      //Login user using 'password' authenticate
-      return auth.$login('password', user);
-    },
     logout: function () {
       //Logout user
-      auth.$logout();
+      // auth.$logout();
+      ref.unauth();
+      angular.copy({}, Auth.user);
     },
     resolveUser: function() {
       //Get current User
-      return auth.$getCurrentUser();
+      // return auth.$getCurrentUser();
+      return ref.getAuth();
     },
     signedIn: function() {
       //Check if a user is logged in
-      return !!Auth.user.provider;
-    },
-    user: {}
-  };
-
-/**
- * Firebase helper methods.... Dont really know whats going on here...
- */
-
-  $rootScope.$on('$firebaseSimpleLogin:login', function(e, user) {
-    console.log('logged in');
-    angular.copy(user, Auth.user);
-    Auth.user.profile = $firebase(ref.child('profile').child(Auth.user.uid)).$asObject();
-    console.log(Auth.user);
-  });
-  $rootScope.$on('$firebaseSimpleLogin:logout', function() {
-    console.log('logged out');
-
-    if(Auth.user && Auth.user.profile) {
-      Auth.user.profile.$destroy();
+      return !!ref.getAuth();
     }
-    angular.copy({}, Auth.user);
-    console.log(Auth.user);
-  });
-
+  };
   return Auth;
 });
+
+
+

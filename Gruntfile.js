@@ -124,7 +124,7 @@ module.exports = function (grunt) {
         src: [
           'Gruntfile.js',
           '<%= yeoman.app %>/scripts/{,*/}*.js',
-          '!<%= yeoman.app %>/scripts/services/angular-count-to.min.js'
+          '!<%= yeoman.app %>/scripts/services/countUp.min.js'
         ]
       },
       test: {

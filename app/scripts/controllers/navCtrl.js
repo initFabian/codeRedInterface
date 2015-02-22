@@ -1,86 +1,103 @@
 'use strict';
 
 /**
- * Controller for:
- * 		views/nav.html
- *
- *	Simply checks if were in the dashboard so it can change the
- * 	 navigation bar
- */
+* Controller for:
+* 		views/nav.html
+*
+*	Simply checks if were in the dashboard so it can change the
+* 	 navigation bar
+*/
 
- app.controller('NavCtrl', function ($scope, $location, $modal, Auth) {
+app.controller('NavCtrl', function ($scope, $location, $modal, Auth) {
 
- 	$scope.user = Auth.user;
+	$scope.user = Auth.resolveUser().password.email;
 
- 	$scope.navShow = {
- 		'margin-top': '0px',
- 		'display': 'block'
- 	};
- 	$scope.backHome = function() {
- 		$scope.navShow = {
- 			'display': 'none'
- 		};
- 	};
- 	$scope.signedIn = Auth.signedIn;
- 	$scope.logout = Auth.logout;
+	$scope.navShow = {
+		'margin-top': '0px',
+		'display': 'block'
+	};
+	$scope.backHome = function() {
+		$scope.navShow = {
+			'display': 'none'
+		};
+	};
+	$scope.signedIn = Auth.signedIn;
+	$scope.logout = Auth.logout;
 
+	$scope.error = '';
 
+	$scope.open = function (size) {
 
- 	$scope.open = function (size) {
+		var modalInstance = $modal.open({
+			templateUrl: 'myModalContent.html',
+			controller: function($scope, $modalInstance, $timeout, Auth, user) {
 
- 		var modalInstance = $modal.open({
- 			templateUrl: 'myModalContent.html',
- 			controller: function($scope, $modalInstance, $timeout, Auth, user) {
+				$scope.user = user;
 
- 				$scope.user = user;
- 				$scope.success = false;
- 				$scope.error = false;
+	 				//reset fields in modal
+	 				$scope.user.p1 = $scope.user.p2 =$scope.user.oldpword = '';
 
- 				$scope.updateUserAccount = function() {
+	 				//inital values for alert boxes in modal
+	 				$scope.success = '';
+	 				$scope.error = '';
 
- 					console.log('updateUserAccount was called');
- 					var _user = $scope.user;
- 					if (_user.p1 !== _user.p2) {
- 						$scope.error = 'Passwords do not match!';
- 						return;
- 					} else {
- 						_user.oldPassword = _user.oldpword;
- 						_user.newPassword = _user.p1
- 						;
- 						Auth.updatePassword(_user).then(function(stat){
- 							console.log('inside the promist');
- 							if (stat.status !== true) {
-	 							$scope.error = stat.status;
-	 							return;
-	 						}
-	 						$scope.success = 'Password change successfully!';
-	 						$timeout(function(){
-	 							$scope.ok();
-	 						},1000);
- 						});
- 					}
- 				};
+	 				$scope.updateUserAccount = function() {
 
- 				$scope.ok = function () {
- 					$modalInstance.close(user);
- 				};
+	 					var _user = $scope.user;
 
- 				$scope.cancel = function () {
- 					$modalInstance.dismiss('cancel');
- 				};
- 			},
- 			size: size,
- 			resolve: {
- 				user: function () {
- 					return Auth.user;
- 				}
- 			}
- 		});
+	 					//check if passwords match
+	 					if (_user.p1 !== _user.p2) {
 
- 		modalInstance.result.then(function (userInfo) {
- 			console.log('user info = ' + userInfo.email);
- 		}, function () {
- 			console.log('Modal dismissed at: ' + new Date());
- 		});
- 	};
- });
+	 						//alert user 'Passwords dont match'
+	 						$scope.error = 'Passwords do not match!';
+	 						return;
+
+	 					} else {
+	 						//set properties for Auth.updatePassword
+	 						_user.oldPassword = _user.oldpword;
+	 						_user.newPassword = _user.p1;
+
+	 						//send update and wait for promise to return
+	 						Auth.updatePassword(_user).then(function(status){
+
+	 							//Success!!
+	 							$scope.error = false;
+	 							$scope.success = status;
+
+	 							//Dismiss modal after 1 second
+	 							$timeout(function(){
+	 								$modalInstance.close(status);
+	 							},1000);
+
+	 						}, function(error) {
+
+	 							//Rejected: Alert user with message
+	 							$scope.success = false;
+	 							$scope.error = error.message.toString();
+	 						});
+	 					}
+	 				};
+
+	 				$scope.cancel = function () {
+
+	 					//Dismiss modal
+	 					$modalInstance.dismiss('cancel');
+	 				};
+	 			},
+	 			size: size,
+	 			resolve: {
+	 				user: function () {
+	 					//send user in information
+	 					return Auth.resolveUser().password;
+	 				}
+	 			}
+	 		});
+
+modalInstance.result.then(function (userInfo) {
+				//Use if I need to pass information back to 'NavCtrl'
+				console.log(userInfo);
+			}, function () {
+				//User clicked 'Cancel' or Off the screen
+			});
+};
+});

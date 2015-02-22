@@ -57,5 +57,5 @@
     redirectTo: '/'
   });
 })
- .constant('FIREBASE_URL', 'https://<FIREBASE-APP>.firebaseio.com/');
+ .constant('FIREBASE_URL', '<FIREBASE-APP>.firebaseio.com/');
 

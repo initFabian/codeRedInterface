@@ -16,6 +16,9 @@
           <a ng-click="backHome()" href="#/" >Home</a>
         </li>
         <li ng-show="signedIn()">
+          <a ng-click="open()">Account</a>
+        </li>
+        <li ng-show="signedIn()">
           <a href="#/" ng-click="logout()">Logout</a>
         </li>
         <li ng-hide="signedIn()">
@@ -55,7 +58,7 @@
               <p ng-show="error" class="alert alert-danger">{{ error }}</p>
               <p ng-show="success" class="alert alert-success">{{ success }}</p>
               <input type="email" ng-model="user.email" placeholder="Email" class="form-control" disabled="true" required><br>
-              <input type="text" ng-model="user.name" placeholder="Name" class="form-control"><br>
+              <!-- <input type="text" ng-model="user.name" placeholder="Name" class="form-control"><br> -->
               <button ng-click="updatePassword = true" ng-hide="updatePassword" type="button" class="btn btn-danger">update password</button>
               <div ng-if="updatePassword == true">
                   <input type="password" ng-model="user.oldpword" placeholder="Current Password" class="form-control" required><br>
@@ -64,7 +67,7 @@
               </div>
           </div>
           <div class="modal-footer">
-              <input type="submit" value="Update" class="btn btn-primary" ng-disabled="!updateAccount.$valid"/>
+              <input ng-if="updatePassword == true" type="submit" value="Update" class="btn btn-primary" ng-disabled="!updateAccount.$valid"/>
               <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
           </div>
         </form>

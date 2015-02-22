@@ -9,9 +9,15 @@ app.controller('AuthCtrl', function ($scope, $location, Auth, user) {
     $location.path('/dashboard/');
   }
 
+  $scope.error = '';
+
   $scope.login = function () {
+
+    //pass user to login function
     Auth.login($scope.user).then(function () {
       console.log(Auth.user);
+
+      //when promise returns, redirect to dashboard
       $location.path('/dashboard/');
     }, function (error) {
       $scope.error = error.toString();
