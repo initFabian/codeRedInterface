@@ -19,26 +19,6 @@ app.controller('HomeCtrl', function ($scope, $location, $http, $timeout, Auth, c
 		$location.path('/login');
 	}
 
-	$scope.addDatabase = function() {
-		console.log('EVERYTHING IS COMMENTED OUT');
-		// $http.get('hackathonDatabase.json').success(function(data) {
-		// 	console.log(codeRED.all);
-		// 	for (var i = 0; i < data.length; i++) {
-		// 		// codeRED.create(data[i]);
-		// 		// console.log('hackathon data: '+obj['Submit Date']);
-		// 	}
-		// });
-	};
-	$scope.deleteDatabase = function() {
-		console.log('EVERYTHING IS COMMENTED OUT');
-		// codeRED.deleteAll();
-	};
-
-
-	$scope.sponsorDocs = codeRED.getSponsorDocs();
-	$scope.googleDocs = codeRED.getDocuments();
-
-
 	$scope.searchQuery = '';
 
 	$scope.isDashboard = true;
@@ -85,6 +65,28 @@ app.controller('HomeCtrl', function ($scope, $location, $http, $timeout, Auth, c
 				$scope.attendees = [];
 				$scope.attendees = codeRED.getAttendees();
 
+			},515);
+
+			$timeout(function () {
+
+				//remove slow animation to make searching faster
+				$scope.initAnimation = false;
+			},516);
+		}
+	};
+})
+.directive('documentPage', function() {
+	return {
+		templateUrl: 'views/templates/documents.html',
+		controller: function($scope, $timeout, codeRED) {
+
+			$scope.initAnimation = true;
+
+			//Add delay so user can see initial animation
+			$timeout(function () {
+				$scope.googleDocs = [];
+				$scope.googleDocs = codeRED.getDocuments();
+
 			},750);
 
 			$timeout(function () {
@@ -95,14 +97,26 @@ app.controller('HomeCtrl', function ($scope, $location, $http, $timeout, Auth, c
 		}
 	};
 })
-.directive('documentPage', function() {
-	return {
-		templateUrl: 'views/templates/documents.html'
-	};
-})
 .directive('sponsorPage', function() {
 	return {
-		templateUrl: 'views/templates/sponsors.html'
+		templateUrl: 'views/templates/sponsors.html',
+		controller: function($scope, $timeout, codeRED) {
+
+			$scope.initAnimation = true;
+
+			//Add delay so user can see initial animation
+			$timeout(function () {
+				$scope.sponsorDocs = [];
+				$scope.sponsorDocs = codeRED.getSponsorDocs();
+
+			},750);
+
+			$timeout(function () {
+
+				//remove slow animation to make searching faster
+				$scope.initAnimation = false;
+			},751);
+		}
 	};
 });
 
