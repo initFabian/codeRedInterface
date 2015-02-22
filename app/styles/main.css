@@ -1,83 +1,596 @@
-.browsehappy {
-  margin: 0.2em 0;
-  background: #ccc;
-  color: #000;
-  padding: 0.2em 0;
+* {
+  padding: 0;
+  margin: 0;
 }
 
 body {
-  padding: 0;
+  color: #262626;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  position: relative;
+  background: #fff;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  overflow-x: hidden;
+  min-height: 320px;
+  padding: 0 !important;
 }
 
-/* Everything but the jumbotron gets side spacing for mobile first views */
-.header,
-.marketing,
-.footer {
-  padding-left: 15px;
-  padding-right: 15px;
+
+body,
+html,
+#wrapper,
+#page-wrapper,
+.ngViews {
+  height: 100%;
 }
 
-/* Custom page header */
-.header {
-  border-bottom: 1px solid #e5e5e5;
-  margin-bottom: 10px;
+.marginTop {
+  margin-top: 60px;
 }
-/* Make the masthead heading the same height as the navigation */
-.header h3 {
-  margin-top: 0;
-  margin-bottom: 0;
-  line-height: 40px;
-  padding-bottom: 19px;
+/* ==========================================================================
+   Dashboard
+   ========================================================================== */
+   .backToDatabase {
+    color:#960c22;
+    text-decoration: none;
+    font-size: 35px;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -1px;
+    cursor: pointer;
+  }
+
+  .backToDatabase:hover {
+    color:#960c22;
+    text-decoration: none;
+  }
+
+  .featurette-heading {
+    font-size: 50px;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+
+  .databaseTotal {
+    text-align: center;
+    margin-top: 10px;
+  }
+  .databaseIcon {
+    color: #fec324;
+  }
+  .documentIcon {
+    color: #4285f4;
+  }
+  .sponsorIcon {
+    color: #960c22;
+  }
+  .checkInIcon {
+    color: #f45a66;
+  }
+  .feedIcon {
+    color: #ee862d;
+  }
+
+  /**
+   * THUMBNAILS
+   */
+
+  .matchesFound {
+    font-size: 50%;
+  }
+  .matchesFound.success{
+    color: #27ae60;
+  }
+  .matchesFound.danger {
+    color:#D24D57;
+  }
+   .dashNail {
+    border: 0px solid transparent;
+  }
+
+  .docNails {
+    height: 150px;
+  }
+
+  .personNail {
+    height: 150px;
+  }
+
+  .searchBox {
+    border-radius: 30px;
+  }
+
+  .searchBox:focus {
+    border-color: #D9534F;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),
+    0 0 8px rgba(217,83,79, .6);
+  }
+
+  .male {
+    color: #59abe3;
+  }
+  .female {
+    color: #f1a9a0;
+  }
+
+/*
+
+========================================================================== */
+
+
+
+
+
+
+/* ==========================================================================
+   Login
+   ========================================================================== */
+
+
+   .login {
+    height:100%;
+  }
+
+  .vertical-center {
+    min-height: 100%;
+    min-height: 100vh;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+
+    -webkit-box-align : center;
+    -webkit-align-items : center;
+    -moz-box-align : center;
+    -ms-flex-align : center;
+    align-items : center;
+
+    width: 100%;
+
+    -webkit-box-pack : center;
+    -moz-box-pack : center;
+    -ms-flex-pack : center;
+    -webkit-justify-content : center;
+    justify-content : center;
+  }
+
+/*
+
+========================================================================== */
+
+
+
+body.modal-open {
+  overflow: auto;
 }
 
-/* Custom page footer */
-.footer {
-  padding-top: 19px;
-  color: #777;
-  border-top: 1px solid #e5e5e5;
-}
-
-.container-narrow > hr {
-  margin: 30px 0;
-}
-
-/* Main marketing message and sign up button */
-.jumbotron {
+.center{
   text-align: center;
-  border-bottom: 1px solid #e5e5e5;
-}
-.jumbotron .btn {
-  font-size: 21px;
-  padding: 14px 24px;
 }
 
-/* Supporting marketing content */
-.marketing {
-  margin: 40px 0;
-}
-.marketing p + h4 {
-  margin-top: 28px;
+.vhelper{
+  float:none;
+  display:inline-block;
+  vertical-align:middle;
+  margin-right:-4px;
 }
 
-/* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
-  .container {
-    max-width: 730px;
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.col-xs-12, .col-sm-4, .col-md-4, .col-lg-4 {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.wrapper {
+  width: 100%;
+  background: url(../images/back.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.noPadd {
+  padding: 0 !important;
+}
+
+.container .row {
+  margin: 0;
+}
+
+.container{
+  padding-top: 0;
+  padding-bottom: 85px;
+}
+
+.row-fluid {
+  padding-bottom: 45px;
+}
+
+p {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  line-height: 21px;
+  font-weight: 400;
+  margin: 0;
+}
+
+h2 {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 36px;
+  line-height: 38px;
+  padding-bottom: 0;
+  font-weight: 300;
+  text-transform: uppercase;
+  margin: 0;
+  color: #e51c23;
+}
+
+h3 {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 24px;
+  line-height: 30px;
+  padding-bottom: 6px;
+  font-weight: 400;
+  margin: 0;
+}
+
+h4 {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 19px;
+  line-height: 24px;
+  padding-bottom: 6px;
+  font-weight: 600;
+  margin: 0;
+}
+
+h5 {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  padding-bottom: 6px;
+  font-weight: 400;
+  margin: 0;
+}
+
+header {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+hr {
+  padding-bottom: 85px;
+  margin:0;
+}
+
+.heading {
+  text-align: center;
+  padding-top: 85px;
+  padding-bottom: 85px;
+}
+
+#home{
+  height: 100vh;
+}
+
+.banner {
+  overflow: hidden;
+  margin: 0 auto !important;
+  background: #1b1f2b;
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+}
+
+.bannerText {
+  height: 370px;
+  position: absolute;
+  text-align: center;
+  padding: 30px 0 30px;
+  max-width: 960px;
+  color: white;
+  zoom: 1;
+  margin: auto;
+  top: -40px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.bannerText h2 {
+  font-size: 34px;
+  text-transform: none;
+  color: white;
+  padding: 20px;
+}
+
+.bannerPart {
+  height: 100%;
+  overflow: hidden;
+}
+
+.menu {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #960C22;
+  border: 0;
+}
+
+.navbar .container{
+  padding:0;
+}
+
+.navbar-header {
+  display: none;
+  height: 60px;
+  padding: 0 18px;
+}
+
+.navbar-brand{
+  height: 24px;
+  margin-top: 3px;
+}
+
+.nav > li > a {
+  display: inline-block;
+  height:60px;
+}
+
+.navbar-nav>li>a{
+  padding-top: 22px;
+}
+
+.navbar-nav > li {
+  float: none;
+  display: inline;
+}
+
+.navbar-nav {
+  margin: 0 auto;
+  text-align: center;
+  float: none;
+}
+
+.navbar-toggle {
+  margin-top: 14px;
+}
+
+.navbar-inverse .navbar-toggle {
+  border: 0;
+}
+
+.navbar-inverse .navbar-toggle {
+  background: transparent;
+}
+
+.navbar-collapse {
+  padding: 0;
+  border: 0;
+}
+
+.navbar-collapse.in {
+  overflow-y: visible;
+  border: 0;
+}
+
+.navbar.navbar-inverse.navbar-static-top {
+  margin: 0 auto;
+  background: transparent;
+  color: #fff;
+  border: none;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+}
+
+.navbar.navbar-inverse.navbar-static-top a {
+  color: #fff;
+  line-height: 18px;
+  text-align: center;
+}
+
+.navbar.navbar-inverse.navbar-static-top a:hover {
+  color: #fff;
+}
+
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus {
+  background: #640817;
+  color: #fff;
+}
+
+.navbar-inverse .navbar-nav>.active>a:hover {
+  background: #640817;
+  color: #fff;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+  color: #fff;
+}
+
+.about {
+  background: #C8102E;
+  color: #fff;
+  position: relative;
+}
+
+.about .heading {
+  padding-bottom: 70px;
+}
+
+.about h2 {
+  color: white;
+}
+
+.about a {
+  color: #F6BE00;
+}
+
+.regButton {
+  font-size: 16px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+  background: #C8102E;
+  padding: 15px 22px;
+  display: inline-block;
+  color: white;
+}
+
+.regHeader {
+  font-size: 16px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+  background: #C8102E;
+  /*display: inline-block;*/
+  color: white;
+  position: relative;
+  /*height: 10%;*/
+}
+
+.regButton:hover {
+  background: #960C22;
+}
+
+#regModal{
+  height: 100%;
+}
+
+.modal {
+  width: 100%;
+  height: 100%;
+  padding: 10% 10% !important;
+}
+
+.modal-header h3{
+  padding-bottom: 0;
+}
+
+.modal-body {
+  height: 80%;
+  border-radius: 0;
+}
+
+.schedule {
+  background: #fff;
+  color: #000;
+}
+
+.scheduleHead{
+  background-color: #F6BE00;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.scheduleHead h5{
+  font-size: 24px;
+  margin-bottom: -6px;
+}
+
+#friday{
+  background-color: #eee;
+  margin-right: 20px;
+  margin-left: -20px;
+}
+
+#saturday{
+  background-color: #eee;
+  margin-right: -20px;
+}
+
+.faq {
+  background: #eee;
+  color: #000;
+}
+
+.faq h2 {
+  color: #C8102E;
+}
+
+.faq .heading {
+  padding-bottom: 70px;
+}
+
+.sponsors {
+  background: #FFFFFF;
+  color: #000;
+}
+
+.sponsors h2 {
+  color: #C8102E;
+}
+
+.sponsors h4 {
+  font-weight: 700;
+}
+
+.sponsors img {
+  max-width: 600px;
+}
+
+.footer {
+  background-color: #54585A;
+}
+
+.footer .container {
+  padding: 40px;
+}
+
+#footerRight {
+  text-align: right;
+}
+
+@media screen and (max-width: 991px) {
+  .bannerText {
+    padding-left: 25px;
+    padding-right: 25px;
   }
 
-  /* Remove the padding we set earlier */
-  .header,
-  .marketing,
-  .footer {
-    padding-left: 0;
-    padding-right: 0;
+  .bannerText h2 {
+    font-size: 28px;
   }
-  /* Space out the masthead */
-  .header {
-    margin-bottom: 30px;
+}
+
+@media screen and (max-width: 810px) {
+  body {
+    min-height: 700px;
   }
-  /* Remove the bottom border on the jumbotron for visual effect */
-  .jumbotron {
-    border-bottom: 0;
+}
+
+@media screen and (max-width: 768px) {
+  #friday{
+    margin-bottom: 15px;
+    margin-left: 0;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .navbar-header {
+    display: block;
+  }
+
+  ul.navbar-nav li a {
+    display: block;
+  }
+
+  #footerRight{
+    text-align: center;
+  }
+
+  .footer{
+    text-align: center;
   }
 }

@@ -1,0 +1,28 @@
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            <a class="backToDatabase" ng-click="notDocuments()"> <i class="fa fa-angle-left"></i> Back</a>
+        </h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="center featurette-heading">Documents</h1>
+    </div>
+</div>
+<div class="row thumbnails">
+    <div ng-repeat="doc in googleDocs" class="col-sm-2">
+    <a ng-if="doc.url" ng-href="{{doc.url}}" target="_blank">
+    	<div class="thumbnail docNails">
+            <div class="caption text-center" ng-switch on="doc.type">
+                <p style="color:#4285f4" ng-switch-when="word"><i class="fa fa-file-word-o fa-3x"></i></p>
+                <p style="color:#0f9d58" ng-switch-when="excel"><i class="fa fa-file-pdf-o fa-3x"></i></p>
+                <p style="color:#fb4c2f" ng-switch-when="pdf"><i class="fa fa-file-excel-o fa-3x"></i></p>
+                <h5>{{doc.title}}</h5>
+                <small>{{doc.owner}}</small>
+            </div>
+        </div>
+    </a>
+    </div>
+</div>

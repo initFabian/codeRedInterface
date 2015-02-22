@@ -1,0 +1,9 @@
+<div ng-include="'views/nav.html'"></div>
+
+<div class="container marginTop" id="wrapper">
+
+	<div ng-if="isDashboard" class="ngViews" home-page></div>
+	<div ng-if="isDatabase" class="ngViews" database-page></div>
+	<div ng-if="isDocuments" class="ngViews" document-page></div>
+	<div ng-if="isSponsors" class="ngViews" sponsor-page></div>
+</div>

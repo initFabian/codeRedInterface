@@ -1,0 +1,57 @@
+<div ng-if="isDashboard" class="ngViews">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header featurette-heading">Dashboard</h1>
+        </div>
+    </div>
+    <div class="row thumbnails">
+        <div ng-click="notDatabase()" class="col-sm-6 col-md-3 col-md-offset-1 dashNail">
+            <div class="thumbnail dashNail">
+                <div class="caption text-center">
+                    <p class="databaseIcon"><i class="fa fa-database fa-5x"></i></p>
+                    <h3>Database</h3>
+                </div>
+            </div>
+        </div>
+        <div ng-click="notDocuments()" class="col-sm-6 col-md-3 dashNail">
+            <div class="thumbnail dashNail">
+                <div class="caption text-center">
+                    <p class="documentIcon"><i class="fa fa-file fa-5x"></i></p>
+                    <h3>Documents</h3>
+                </div>
+            </div>
+        </div>
+        <div ng-click="notSponsors()"  class="col-sm-6 col-md-3 dashNail">
+            <div class="thumbnail dashNail">
+                <div class="caption text-center">
+                    <p class="sponsorIcon"><i class="fa fa-money fa-5x"></i></p>
+                    <h3>Funding/Sponsors</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header featurette-heading">Day of Event</h1>
+            <h3 style="color:#e74c3c">(Coming Soon)</h3>
+        </div>
+    </div>
+    <div class="row thumbnails">
+        <div ng-click="hello()"  class="col-sm-6 col-md-3 col-md-offset-2">
+            <div class="thumbnail dashNail">
+                <div class="caption text-center">
+                    <p class="checkInIcon"><i class="fa fa-ticket fa-5x"></i></p>
+                    <h3>Check In</h3>
+                </div>
+            </div>
+        </div>
+        <div ng-click="hello()" class="col-sm-6 col-md-3 col-md-offset-2">
+            <div class="thumbnail dashNail">
+                <div class="caption text-center">
+                    <p class="feedIcon"><i class="fa fa-rss fa-5x"></i></p>
+                    <h3>Feed</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

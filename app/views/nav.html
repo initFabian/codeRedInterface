@@ -1,0 +1,74 @@
+<nav ng-controller="NavCtrl" class="navbar navbar-inverse navbar-fixed-top menu">
+  <div class="container" ng-style="navShow">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#"><img src="images/CodeRED-Light.svg" height="24">
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul ng-if="signedIn()" class="nav navbar-nav navbar-right">
+        <li class="menuItem">
+          <a ng-click="backHome()" href="#/" >Home</a>
+        </li>
+        <li ng-show="signedIn()">
+          <a ng-click="open()">Account</a>
+        </li>
+        <li ng-show="signedIn()">
+          <a href="#/" ng-click="logout()">Logout</a>
+        </li>
+        <li ng-hide="signedIn()">
+          <a href="#/login">Login</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<script type="text/javascript">
+        $(function() {
+
+            $(".navbar.navbar-inverse.navbar-static-top a").click(function() {
+                $(".navbar-collapse").addClass("hideClass");
+                $(".navbar-collapse").addClass("collapse");
+                $(".navbar-collapse").removeClass("in");
+            });
+            $(".navbar-toggle").click(function() {
+                $(".navbar-collapse").removeClass("hideClass");
+            });
+
+            $(function() {
+                //calling it after delay because of angular
+                $(".menu").show();
+            });
+        });
+
+    </script>
+
+    <script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Account Info</h3>
+        </div>
+        <form name="updateAccount" ng-submit="updateAccount.$valid && updateUserAccount()" novalidate>
+          <div ng-init="updatePassword = false" class="modal-body">
+              <p ng-show="error" class="alert alert-danger">{{ error }}</p>
+              <p ng-show="success" class="alert alert-success">{{ success }}</p>
+              <input type="email" ng-model="user.email" placeholder="Email" class="form-control" disabled="true" required><br>
+              <input type="text" ng-model="user.name" placeholder="Name" class="form-control"><br>
+              <button ng-click="updatePassword = true" ng-hide="updatePassword" type="button" class="btn btn-danger">update password</button>
+              <div ng-if="updatePassword == true">
+                  <input type="password" ng-model="user.oldpword" placeholder="Current Password" class="form-control" required><br>
+                  <input type="password" ng-model="user.p1" placeholder="New Password" class="form-control" required><br>
+                  <input type="password" ng-model="user.p2" placeholder="Confirm Password" class="form-control" required><br>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <input type="submit" value="Update" class="btn btn-primary" ng-disabled="!updateAccount.$valid"/>
+              <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+          </div>
+        </form>
+    </script>

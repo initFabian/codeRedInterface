@@ -1,3 +1,5 @@
+/* global app:true */
+/* exported app */
 'use strict';
 
 /**
@@ -8,26 +10,52 @@
  *
  * Main module of the application.
  */
-angular
-  .module('codeRedInterfaceApp', [
-    'ngAnimate',
-    'ngCookies',
-    'ngResource',
-    'ngRoute',
-    'ngSanitize',
-    'ngTouch'
+ var app = angular.module('codeRedInterfaceApp', [
+  'ngAnimate',
+  'ngCookies',
+  'ngResource',
+  'ngRoute',
+  'ngSanitize',
+  'ngTouch',
+  'ui.bootstrap',
+  'firebase',
+  'countTo'
   ])
-  .config(function ($routeProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
-      })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl'
-      })
-      .otherwise({
-        redirectTo: '/'
-      });
+ .config(function ($routeProvider) {
+  $routeProvider
+  .when('/', {
+    templateUrl: 'views/mainPage.html'
+  })
+  .when('/register', {
+    templateUrl: 'views/register.html',
+    controller: 'AuthCtrl',
+    resolve: {
+      user: function(Auth) {
+        return Auth.resolveUser();
+      }
+    }
+  })
+  .when('/login', {
+    templateUrl: 'views/login.html',
+    controller: 'AuthCtrl',
+    resolve: {
+      user: function(Auth) {
+        return Auth.resolveUser();
+      }
+    }
+  })
+  .when('/dashboard/', {
+    templateUrl: 'views/home.html',
+    controller: 'HomeCtrl',
+    resolve: {
+      user: function(Auth) {
+        return Auth.resolveUser();
+      }
+    }
+  })
+  .otherwise({
+    redirectTo: '/'
   });
+})
+ .constant('FIREBASE_URL', 'https://<FIREBASE-APP>.firebaseio.com/');
+
