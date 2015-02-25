@@ -13,59 +13,74 @@
  */
 
 
-app.controller('HomeCtrl', function ($scope, $location, $http, $timeout, Auth, codeRED, user) {
+ app.controller('HomeCtrl', function ($scope, $location, $http, $timeout, Auth, codeRED, user) {
 
-	if (!user) {
-		$location.path('/login');
-	}
+ 	if (!user) {
+ 		$location.path('/login');
+ 	}
 
-	$scope.searchQuery = '';
-	$scope.attendees = codeRED.getAttendees();
-	$scope.googleDocs = codeRED.getDocuments();
-	$scope.sponsorDocs = codeRED.getSponsorDocs();
+ 	$scope.searchQuery = '';
+ 	$scope.attendees = codeRED.getAttendees();
+ 	$scope.googleDocs = codeRED.getDocuments();
+ 	$scope.sponsorDocs = codeRED.getSponsorDocs();
 
-	$scope.initAnimation = true;
-	$scope.isDashboard = true;
-	$scope.isDatabase = false;
-	$scope.isDocuments = false;
-	$scope.isSponsors = false;
+ 	$scope.initAnimation = true;
+ 	$scope.isDashboard = true;
+ 	$scope.isDatabase = false;
+ 	$scope.isDocuments = false;
+ 	$scope.isSponsors = false;
 
-	var notDashboard = function() {
-		$scope.isDashboard = !$scope.isDashboard;
-	};
+ 	var notDashboard = function() {
+ 		$scope.isDashboard = !$scope.isDashboard;
+ 	};
 
-	$scope.notDatabase = function() {
-		$scope.isDatabase = !$scope.isDatabase;
-		notDashboard();
-	};
+ 	$scope.notDatabase = function() {
+ 		$scope.isDatabase = !$scope.isDatabase;
+ 		notDashboard();
+ 	};
 
-	$scope.notDocuments = function() {
-		$scope.isDocuments = !$scope.isDocuments;
-		notDashboard();
-	};
+ 	$scope.notDocuments = function() {
+ 		$scope.isDocuments = !$scope.isDocuments;
+ 		notDashboard();
+ 	};
 
-	$scope.notSponsors = function() {
-		$scope.isSponsors = !$scope.isSponsors;
-		notDashboard();
-	};
+ 	$scope.notSponsors = function() {
+ 		$scope.isSponsors = !$scope.isSponsors;
+ 		notDashboard();
+ 	};
 
-})
-.directive('homePage', function() {
-	return {
-		templateUrl: 'views/templates/dashboard.html'
-	};
+ })
+ .directive('homePage', function() {
+ 	return {
+ 		templateUrl: 'views/templates/dashboard.html'
+ 	};
 
-})
-.directive('databasePage', function() {
+ })
+ .directive('databasePage', function() {
 	//Database directive has its own controller so the animations can
 	// be loaded when the directive loads, and not when the controller loads
 	return {
 		templateUrl: 'views/templates/databases.html',
-		controller: function($scope, $timeout, codeRED) {
+		controller: function($scope, $timeout, $http, codeRED) {
 
 			$scope.initAnimation = true;
 			$scope.attendees = [];
-			//Add delay so user can see initial animation
+
+			/*
+			// use this for loop to add recently exported database
+			$http.get('<dbfile>.json').
+			success(function(data) {
+				console.log('hacathon stuff');
+				for (var x = data.length - 1; x >= 0; x--) {
+					codeRED.create(data[x]);
+				}
+			}).
+			error(function(data) {
+				console.log('error');
+			});
+
+			*/
+ 			//Add delay so user can see initial animation
 			$timeout(function () {
 				$scope.attendees = codeRED.getAttendees();
 			},750);
