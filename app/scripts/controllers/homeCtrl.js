@@ -29,6 +29,7 @@
  	$scope.isDatabase = false;
  	$scope.isDocuments = false;
  	$scope.isSponsors = false;
+ 	$scope.isCheckIn = false;
 
  	var notDashboard = function() {
  		$scope.isDashboard = !$scope.isDashboard;
@@ -46,6 +47,11 @@
 
  	$scope.notSponsors = function() {
  		$scope.isSponsors = !$scope.isSponsors;
+ 		notDashboard();
+ 	};
+
+ 	$scope.notCheckIn = function() {
+ 		$scope.isCheckIn = !$scope.isCheckIn;
  		notDashboard();
  	};
 
@@ -68,7 +74,7 @@
 
 			/*
 			// use this for loop to add recently exported database
-			$http.get('<dbfile>.json').
+			$http.get('hackathon.json').
 			success(function(data) {
 				console.log('hacathon stuff');
 				for (var x = data.length - 1; x >= 0; x--) {
@@ -130,6 +136,43 @@
 
 			$timeout(function () {
 
+				//remove slow animation to make searching faster
+				$scope.initAnimation = false;
+			},850);
+		}
+	};
+})
+
+.directive('checkInPage', function() {
+	//Database directive has its own controller so the animations can
+	// be loaded when the directive loads, and not when the controller loads
+	return {
+		templateUrl: 'views/templates/checkInPage.html',
+		controller: function($scope, $timeout, $http, codeRED) {
+
+			$scope.initAnimation = true;
+			$scope.attendees = [];
+
+			/*
+			// use this for loop to add recently exported database
+			$http.get('hackathon.json').
+			success(function(data) {
+				console.log('hacathon stuff');
+				for (var x = data.length - 1; x >= 0; x--) {
+					codeRED.create(data[x]);
+				}
+			}).
+			error(function(data) {
+				console.log('error');
+			});
+
+			*/
+ 			//Add delay so user can see initial animation
+			$timeout(function () {
+				$scope.attendees = codeRED.getAttendees();
+			},750);
+
+			$timeout(function () {
 				//remove slow animation to make searching faster
 				$scope.initAnimation = false;
 			},850);
