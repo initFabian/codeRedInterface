@@ -94,10 +94,10 @@ app.controller('NavCtrl', function ($scope, $location, $modal, Auth) {
 	 		});
 
 modalInstance.result.then(function (userInfo) {
-				//Use if I need to pass information back to 'NavCtrl'
-				console.log(userInfo);
-			}, function () {
-				//User clicked 'Cancel' or Off the screen
-			});
+		//Use if I need to pass information back to 'NavCtrl'
+		console.log(userInfo);
+	}, function () {
+		//User clicked 'Cancel' or Off the screen
+	});
 };
 });

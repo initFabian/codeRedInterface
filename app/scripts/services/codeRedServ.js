@@ -21,6 +21,23 @@ app.factory('codeRED', function ($firebase, $q, FIREBASE_URL) {
       var attendees = $firebase(ref.child('attendees')).$asArray();
       return attendees.$add(post);
     },
+
+
+//TODO: add attendee to firebase {attendeeID: true}
+    checkIn: function (_attendee) {
+
+      //Add attendee checkIn
+      var attendees = $firebase(ref.child('checkedIn')).$asArray();
+      return attendees.$add(_attendee);
+    },
+
+//TODO: remove attendee to firebase
+    notCheckIn: function(_attendee) {
+      //Remove attendee checkIn
+      var attendees = $firebase(ref.child('checkedIn')).$asArray();
+      return attendees.$remove(_attendee);
+    },
+
     get: function (postId) {
 
       //Get individual attendee

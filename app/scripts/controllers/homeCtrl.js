@@ -148,35 +148,46 @@
 	// be loaded when the directive loads, and not when the controller loads
 	return {
 		templateUrl: 'views/templates/checkInPage.html',
-		controller: function($scope, $timeout, $http, codeRED) {
+		controller: function($scope, $timeout, $http, $modal, codeRED) {
 
-			$scope.initAnimation = true;
-			$scope.attendees = [];
+			$scope.nameQuery = '';
+			$scope.schoolQuery = '';
+			$scope.attendees = codeRED.getAttendees();
 
-			/*
-			// use this for loop to add recently exported database
-			$http.get('hackathon.json').
-			success(function(data) {
-				console.log('hacathon stuff');
-				for (var x = data.length - 1; x >= 0; x--) {
-					codeRED.create(data[x]);
-				}
-			}).
-			error(function(data) {
-				console.log('error');
-			});
+			$scope.attendeeCheckIn = function (size,_attendee) {
+				console.log('open modal');
+			var modalInstance = $modal.open({
+				templateUrl: 'checkInPage.html',
+					controller: function($scope, $modalInstance, attendee) {
+						$scope.attendee = attendee;
 
-			*/
- 			//Add delay so user can see initial animation
-			$timeout(function () {
-				$scope.attendees = codeRED.getAttendees();
-			},750);
+						$scope.checkInAttendee = function(_attendee) {
+							$modalInstance.close(_attendee);
+						};
+		 				$scope.cancel = function () {
+		 					//Dismiss modal
+		 					$modalInstance.dismiss('cancel');
+		 				};
+		 			},
+		 			size: size,
+		 			resolve: {
+		 				attendee: function () {
+		 					//send attendee in information
+		 					return _attendee;
+		 				}
+		 			}
+	 		});
 
-			$timeout(function () {
-				//remove slow animation to make searching faster
-				$scope.initAnimation = false;
-			},850);
+modalInstance.result.then(function (_attendee) {
+		//Use if I need to pass information back to 'NavCtrl'
+		console.log(_attendee);
+	}, function () {
+		//User clicked 'Cancel' or Off the screen
+	});
+};
+
 		}
 	};
+
 });
 
