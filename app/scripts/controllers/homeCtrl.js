@@ -152,6 +152,7 @@
 
 			$scope.nameQuery = '';
 			$scope.schoolQuery = '';
+			$scope.travelQuery = '';
 			$scope.attendees = codeRED.getAttendees();
 
 			$scope.attendeeCheckIn = function (size,_attendee) {
