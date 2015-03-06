@@ -30,6 +30,7 @@
  	$scope.isDocuments = false;
  	$scope.isSponsors = false;
  	$scope.isCheckIn = false;
+ 	$scope.isFeed = false;
 
  	var notDashboard = function() {
  		$scope.isDashboard = !$scope.isDashboard;
@@ -55,6 +56,10 @@
  		notDashboard();
  	};
 
+ 	$scope.notFeed = function() {
+ 		$scope.isFeed = !$scope.isFeed;
+ 		notDashboard();
+ 	};
  })
  .directive('homePage', function() {
  	return {
@@ -148,47 +153,88 @@
 	// be loaded when the directive loads, and not when the controller loads
 	return {
 		templateUrl: 'views/templates/checkInPage.html',
-		controller: function($scope, $timeout, $http, $modal, codeRED) {
+		controller: function($scope, $timeout, $http, $modal, $q, codeRED) {
 
 			$scope.nameQuery = '';
 			$scope.schoolQuery = '';
 			$scope.travelQuery = '';
 			$scope.attendees = codeRED.getAttendees();
 
+			$scope.isCheckedIn = function(_attendee) {
+				var deferred = $q.defer();
+				codeRED.getCheckedIn(_attendee).then(function(checkedIn) {
+					deferred.resolve(checkedIn);
+				});
+
+				return deferred.promise;
+			};
+
 			$scope.attendeeCheckIn = function (size,_attendee) {
-				console.log('open modal');
-			var modalInstance = $modal.open({
-				templateUrl: 'checkInPage.html',
-					controller: function($scope, $modalInstance, attendee) {
-						$scope.attendee = attendee;
+				$modal.open({
+					templateUrl: 'checkInPage.html',
+						controller: function($scope, $modalInstance, codeRED, attendee) {
+							$scope.attendee = attendee;
+							codeRED.getCheckedIn(attendee).then(function(checkedIn) {
+								$scope.boolIsCheckedIn = checkedIn;
+							});
 
-						$scope.checkInAttendee = function(_attendee) {
-							$modalInstance.close(_attendee);
-						};
-		 				$scope.cancel = function () {
-		 					//Dismiss modal
-		 					$modalInstance.dismiss('cancel');
-		 				};
-		 			},
-		 			size: size,
-		 			resolve: {
-		 				attendee: function () {
-		 					//send attendee in information
-		 					return _attendee;
-		 				}
-		 			}
-	 		});
+							//CHECK USER IN
+							$scope.didCheckIn = function(_attendee) {
+								codeRED.checkIn(attendee)
+								.then(function(error,errorMessage) {
+									if (!error) {
+										$scope.boolIsCheckedIn = !$scope.boolIsCheckedIn;
+									    $timeout(function () {
+											$modalInstance.close(_attendee);
+										},1050);
+									} else {
+										//TODO: pass back error message
+										console.log(errorMessage);
+									}
+								});
+							};
 
-modalInstance.result.then(function (_attendee) {
-		//Use if I need to pass information back to 'NavCtrl'
-		console.log(_attendee);
-	}, function () {
-		//User clicked 'Cancel' or Off the screen
-	});
-};
+							//CHECK USER OUT
+							$scope.didCheckOut = function(_attendee) {
+								codeRED.notCheckIn(attendee)
+								.then(function(error,errorMessage) {
+									if (!error) {
+										$scope.boolIsCheckedIn = !$scope.boolIsCheckedIn;
+									    $timeout(function () {
+											$modalInstance.close(_attendee);
+										},1050);
+									} else {
+										//TODO: pass back error message
+										console.log(errorMessage);
+									}
+								});
+							};
+
+
+			 				$scope.cancel = function () {
+			 					//Dismiss modal
+			 					$modalInstance.dismiss('cancel');
+			 				};
+			 			},
+			 			size: size,
+			 			resolve: {
+			 				attendee: function () {
+			 					//send attendee in information
+			 					return _attendee;
+			 				}
+			 			}
+		 		});
+			};
+		}
+	};
+})
+
+.directive('feedPage', function() {
+	return {
+		templateUrl: 'views/templates/feed.html',
+		controller: function() {
 
 		}
 	};
-
 });
 

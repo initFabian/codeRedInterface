@@ -23,20 +23,79 @@ app.factory('codeRED', function ($firebase, $q, FIREBASE_URL) {
     },
 
 
-//TODO: add attendee to firebase {attendeeID: true}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    getCheckedIn: function(_attendee) {
+      var deferred = $q.defer();
+
+      // Is the attendee in the checkIn list?
+      var ref = new Firebase(FIREBASE_URL).child('attendees/'+_attendee.$id+'/checkedIn');
+      ref.on('value', function(snapshot) {
+        //returns either true or false
+        deferred.resolve(snapshot.val());
+      });
+
+      return deferred.promise;
+    },
+
     checkIn: function (_attendee) {
-
+      var deferred = $q.defer();
       //Add attendee checkIn
-      var attendees = $firebase(ref.child('checkedIn')).$asArray();
-      return attendees.$add(_attendee);
+      var ref = new Firebase(FIREBASE_URL).child('attendees/'+_attendee.$id+'/checkedIn');
+      ref.set(true,function(error) {
+        if (!error) {
+          // return false for the error
+          deferred.resolve(false);
+        } else {
+          // return true for the error with error message
+          deferred.resolve(true,'There was an issue while removing check in.');
+        }
+      });
+      return deferred.promise;
     },
 
-//TODO: remove attendee to firebase
     notCheckIn: function(_attendee) {
+      var deferred = $q.defer();
+
       //Remove attendee checkIn
-      var attendees = $firebase(ref.child('checkedIn')).$asArray();
-      return attendees.$remove(_attendee);
+      var ref = new Firebase(FIREBASE_URL).child('attendees/'+_attendee.$id+'/checkedIn');
+      ref.set(null,function(error) {
+        if (!error) {
+          // return false for the error
+          deferred.resolve(false);
+        } else {
+          // return true for the error with error message
+          deferred.resolve(true,'There was an issue while removing check in.');
+        }
+      });
+      return deferred.promise;
     },
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     get: function (postId) {
 

@@ -20,10 +20,10 @@
     <form role="form">
         <div class="row">
             <div class="form-group">
-                <input type="text" class="form-control input-lg searchBox" ng-model="nameQuery" placeholder="Search by Name">
+                <input type="text" class="form-control input-lg searchBox" ng-model="schoolQuery" placeholder="Search by School">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control input-lg searchBox" ng-model="schoolQuery" placeholder="Search by Name">
+                <input type="text" class="form-control input-lg searchBox" ng-model="nameQuery" placeholder="Search by Name">
             </div>
             <div class="col-xs-12 center">
                 <h2 ng-hide="filtered.length == attendees.length">
@@ -34,7 +34,7 @@
     </form>
     <div ng-repeat="person in filtered = (attendees | filter:{ 'Name?': nameQuery, 'School?': schoolQuery })"  class="col-sm-3 col-md-2 repeat-animation hide-fade">
         <div class="thumbnail personNail">
-            <div ng-click="attendeeCheckIn('',person)" class="caption text-center">
+            <div ng-click="attendeeCheckIn('',person)" class="caption checkInNails text-center" ng-class="{'bg-success': person['checkedIn'] == true}">
                 <p ng-class="{male: person['Gender?'] == 'M', female: person['Gender?'] == 'F'}"><i class="fa fa-user fa-3x"></i></p>
                 <h4>{{person['Name?']}}</h4>
                 <small>{{person['School?']}}</small>
@@ -46,7 +46,7 @@
 <!-- MODAL -->
 <script type="text/ng-template" id="checkInPage.html">
     <div class="modal-header">
-        <h3 class="modal-title">{{attendee['Name?']}}</h3>
+        <h3 class="modal-title">{{attendee['Name?']}} <span ng-show="boolIsCheckedIn" class="pull-right text-success">Checked In <i class="fa fa-check-circle-o"></i></span></h3>
     </div>
     <div class="modal-body">
         <form class="form-horizontal">
@@ -76,8 +76,11 @@
             </div>
 
             <div class="form-group">
-                <div class="col-sm-8 col-sm-offset-2">
-                    <button type="button" ng-click="checkInAttendee(attendee)" class="btn btn-success checkInButton">Check In! </button>
+                <div ng-show="!boolIsCheckedIn" class="col-sm-8 col-sm-offset-2">
+                    <button type="button" ng-click="didCheckIn(attendee)" class="btn btn-success checkInButton">Check In! </button>
+                </div>
+                <div ng-show="boolIsCheckedIn" class="col-sm-8 col-sm-offset-2">
+                    <button type="button" ng-click="didCheckOut(attendee)" class="btn btn-danger checkInButton">Remove Check In! </button>
                 </div>
             </div>
 

@@ -108,6 +108,10 @@ html,
     height: 150px;
   }
 
+  .checkInNails {
+    height: 100%;
+  }
+
   .searchBox {
     border-radius: 30px;
   }
