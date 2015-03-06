@@ -148,6 +148,12 @@
 	};
 })
 
+.directive('feedPage', function() {
+	return {
+		templateUrl: 'views/templates/feed.html'
+	};
+})
+
 .directive('checkInPage', function() {
 	//Database directive has its own controller so the animations can
 	// be loaded when the directive loads, and not when the controller loads
@@ -225,16 +231,9 @@
 			 			}
 		 		});
 			};
-		}
-	};
-})
-
-.directive('feedPage', function() {
-	return {
-		templateUrl: 'views/templates/feed.html',
-		controller: function() {
 
 		}
 	};
+
 });
 

@@ -124,9 +124,7 @@ module.exports = function (grunt) {
         src: [
           'Gruntfile.js',
           '<%= yeoman.app %>/scripts/{,*/}*.js',
-          '!<%= yeoman.app %>/scripts/services/countUp.min.js',
-          '!<%= yeoman.app %>/scripts/library/twitter-timeline.js'
-
+          '!<%= yeoman.app %>/scripts/services/countUp.min.js'
         ]
       },
       test: {
