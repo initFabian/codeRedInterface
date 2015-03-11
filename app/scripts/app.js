@@ -44,7 +44,7 @@
       }
     }
   })
-  .when('/dashboard/', {
+  .when('/dashboard', {
     templateUrl: 'views/home.html',
     controller: 'HomeCtrl',
     resolve: {
@@ -56,8 +56,21 @@
   .otherwise({
     redirectTo: '/'
   });
+}).run(function ($rootScope, $location, Auth) {
+    $rootScope.$on('$routeChangeStart', function () {
+
+        if (!Auth.signedIn()) {
+            console.log('DENY');
+            // event.preventDefault();
+            $location.path('/login');
+        }
+        else {
+            console.log('ALLOW');
+            // $location.path('/dashboard');
+        }
+    });
 })
- .constant('FIREBASE_URL', '<FIREBASE-APP>.firebaseio.com/');
+ .constant('FIREBASE_URL', 'testcodered.firebaseio.com/');
 
 
 
