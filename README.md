@@ -1,7 +1,7 @@
 
 # CodeRED Hackathon Interface
 
-The interface is a simple, easy to use web app for the organizers of the CodeRED Hackathon. It is built using [AngularJS](http://angularjs.org/), It gives us quick access to the attendee database, along with quick access to our documents. It uses [Firebase](http://www.firebase.com) as the backend to store the data.
+The interface is a simple, easy to use web app for the organizers of the [CodeRED Hackathon](http://codered.cougarcs.com/). It is built using [AngularJS](http://angularjs.org/), It gives us quick access to the attendee database, along with quick access to our documents. It uses [Firebase](http://www.firebase.com) as the backend to store the data.
 
 
 ## Installation
