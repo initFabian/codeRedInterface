@@ -6,7 +6,7 @@
 
 app.controller('AuthCtrl', function ($scope, $location, Auth, user) {
   if (user) {
-    $location.path('/dashboard/');
+    $location.path('/dashboard');
   }
 
   $scope.error = '';

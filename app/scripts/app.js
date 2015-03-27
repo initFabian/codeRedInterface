@@ -24,7 +24,10 @@
  .config(function ($routeProvider) {
   $routeProvider
   .when('/', {
-    templateUrl: 'views/mainPage.html'
+    templateUrl: 'views/mainPage.html',
+    data: {
+      authRequired: false
+    }
   })
   .when('/register', {
     templateUrl: 'views/register.html',
@@ -33,7 +36,10 @@
       user: function(Auth) {
         return Auth.resolveUser();
       }
-    }
+    },
+      data: {
+        authRequired: false
+      }
   })
   .when('/login', {
     templateUrl: 'views/login.html',
@@ -42,7 +48,10 @@
       user: function(Auth) {
         return Auth.resolveUser();
       }
-    }
+    },
+      data: {
+        authRequired: false
+      }
   })
   .when('/dashboard', {
     templateUrl: 'views/home.html',
@@ -51,26 +60,31 @@
       user: function(Auth) {
         return Auth.resolveUser();
       }
-    }
+    },
+      data: {
+        authRequired: true
+      }
   })
   .otherwise({
     redirectTo: '/'
   });
 }).run(function ($rootScope, $location, Auth) {
-    $rootScope.$on('$routeChangeStart', function () {
+    $rootScope.$on('$routeChangeStart', function (event,next,current) {
 
-        if (!Auth.signedIn()) {
+        if ((next.$$route.data.authRequired) && !Auth.signedIn()) {
             console.log('DENY');
-            // event.preventDefault();
+            event.preventDefault();
             $location.path('/login');
         }
         else {
             console.log('ALLOW');
             // $location.path('/dashboard');
+            console.log(event,next,current);
         }
+
     });
 })
- .constant('FIREBASE_URL', 'testcodered.firebaseio.com/');
+ .constant('FIREBASE_URL', '<FIREBASE-URL>.firebaseio.com/');
 
 
 
