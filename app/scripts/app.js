@@ -71,7 +71,7 @@
 }).run(function ($rootScope, $location, Auth) {
     $rootScope.$on('$routeChangeStart', function (event,next,current) {
 
-        if ((next.$$route.data.authRequired) && !Auth.signedIn()) {
+        if (!(!!next.$$route.redirectTo) && !!next.$$route.data.authRequired && !Auth.signedIn()) {
             console.log('DENY');
             event.preventDefault();
             $location.path('/login');
@@ -84,7 +84,7 @@
 
     });
 })
- .constant('FIREBASE_URL', '<FIREBASE-URL>.firebaseio.com/');
+ .constant('FIREBASE_URL', '<FIREBASE-APP>.firebaseio.com/');
 
 
 
