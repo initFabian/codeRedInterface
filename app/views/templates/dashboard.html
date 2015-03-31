@@ -36,7 +36,7 @@
         </div>
     </div>
     <div class="row thumbnails">
-        <div ng-click="notCheckIn()"  class="col-sm-6 col-md-3 col-md-offset-2">
+        <div ng-click="notCheckIn()" class="col-sm-6 col-md-3 col-md-offset-1 dashNail">
             <div class="thumbnail dashNail">
                 <div class="caption text-center">
                     <p class="checkInIcon"><i class="fa fa-ticket fa-5x"></i></p>
@@ -44,7 +44,15 @@
                 </div>
             </div>
         </div>
-        <div ng-click="notFeed()" class="col-sm-6 col-md-3 col-md-offset-2">
+        <div ng-click="open()" class="col-sm-6 col-md-3 dashNail">
+            <div class="thumbnail dashNail">
+                <div class="caption text-center">
+                    <p class="checkInIcon"><i class="fa fa-ticket fa-5x"></i></p>
+                    <h3>Register</h3>
+                </div>
+            </div>
+        </div>
+        <div ng-click="notFeed()" class="col-sm-6 col-md-3 dashNail">
             <div class="thumbnail dashNail">
                 <div class="caption text-center">
                     <p class="feedIcon"><i class="fa fa-rss fa-5x"></i></p>
@@ -54,3 +62,27 @@
         </div>
     </div>
 </div>
+
+<script type="text/ng-template" id="registerAttendee.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Account Info</h3>
+        </div>
+        <form name="updateAccount" ng-submit="updateAccount.$valid && updateUserAccount()" novalidate>
+          <div ng-init="updatePassword = false" class="modal-body">
+              <p ng-show="error" class="alert alert-danger">{{ error }}</p>
+              <p ng-show="success" class="alert alert-success">{{ success }}</p>
+              <input type="email" ng-model="user.email" placeholder="Email" class="form-control" disabled="true" required><br>
+              <!-- <input type="text" ng-model="user.name" placeholder="Name" class="form-control"><br> -->
+              <button ng-click="updatePassword = true" ng-hide="updatePassword" type="button" class="btn btn-danger">update password</button>
+              <div ng-if="updatePassword == true">
+                  <input type="password" ng-model="user.oldpword" placeholder="Current Password" class="form-control" required><br>
+                  <input type="password" ng-model="user.p1" placeholder="New Password" class="form-control" required><br>
+                  <input type="password" ng-model="user.p2" placeholder="Confirm Password" class="form-control" required><br>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <input ng-if="updatePassword == true" type="submit" value="Update" class="btn btn-primary" ng-disabled="!updateAccount.$valid"/>
+              <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+          </div>
+        </form>
+    </script>

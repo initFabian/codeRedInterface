@@ -1,19 +1,9 @@
 'use strict';
 
-/**
- * Controller for:
- * 		views/home.html
- * 		views/templates/dashboard.html
- * 		views/templates/databases.html
- * 		views/templates/documents.html
- * 		views/templates/sponsors.html
- *
- *	Set $scope variables sponsorDocs, googleDocs,
- *	 and attendees for the directives
- */
 
 
- app.controller('HomeCtrl', function ($scope, $location, $http, $timeout, Auth, codeRED, user) {
+
+ app.controller('HomeCtrl', function ($scope, $location, $http, $timeout, Auth, codeRED, user,$modal) {
 
  	if (!user) {
  		$location.path('/login');
@@ -60,14 +50,87 @@
  		$scope.isFeed = !$scope.isFeed;
  		notDashboard();
  	};
- })
- .directive('homePage', function() {
- 	return {
- 		templateUrl: 'views/templates/dashboard.html'
- 	};
 
- })
- .directive('databasePage', function() {
+  $scope.open = function (size) {
+
+    var modalInstance = $modal.open({
+      templateUrl: 'registerAttendee.html',
+      controller: function($scope, $modalInstance, $timeout, Auth, user) {
+
+        $scope.user = user;
+
+          //reset fields in modal
+          $scope.user.p1 = $scope.user.p2 =$scope.user.oldpword = '';
+
+          //inital values for alert boxes in modal
+          $scope.success = '';
+          $scope.error = '';
+
+          $scope.updateUserAccount = function() {
+
+            var _user = $scope.user;
+
+            //check if passwords match
+            if (_user.p1 !== _user.p2) {
+
+              //alert user 'Passwords dont match'
+              $scope.error = 'Passwords do not match!';
+              return;
+
+            } else {
+              //set properties for Auth.updatePassword
+              _user.oldPassword = _user.oldpword;
+              _user.newPassword = _user.p1;
+
+              //send update and wait for promise to return
+              Auth.updatePassword(_user).then(function(status){
+
+                //Success!!
+                $scope.error = false;
+                $scope.success = status;
+
+                //Dismiss modal after 1 second
+                $timeout(function(){
+                  $modalInstance.close(status);
+                },1000);
+
+              }, function(error) {
+
+                //Rejected: Alert user with message
+                $scope.success = false;
+                $scope.error = error.message.toString();
+              });
+            }
+          };
+
+          $scope.cancel = function () {
+
+            //Dismiss modal
+            $modalInstance.dismiss('cancel');
+          };
+        },
+        size: size,
+        resolve: {
+          user: function () {
+            //send user in information
+            return Auth.resolveUser().password;
+          }
+        }
+      });
+
+modalInstance.result.then(function (userInfo) {
+  console.log(userInfo);
+}, function () {
+});
+};
+})
+.directive('homePage', function() {
+  return {
+   templateUrl: 'views/templates/dashboard.html'
+ };
+
+})
+.directive('databasePage', function() {
 	//Database directive has its own controller so the animations can
 	// be loaded when the directive loads, and not when the controller loads
 	return {
@@ -90,18 +153,18 @@
 				console.log('error');
 			});
 
-			*/
+      */
  			//Add delay so user can see initial animation
-			$timeout(function () {
-				$scope.attendees = codeRED.getAttendees();
-			},750);
+       $timeout(function () {
+        $scope.attendees = codeRED.getAttendees();
+      },750);
 
-			$timeout(function () {
+       $timeout(function () {
 				//remove slow animation to make searching faster
 				$scope.initAnimation = false;
-			},850);
-		}
-	};
+      },850);
+    }
+  };
 })
 .directive('documentPage', function() {
 	return {
@@ -178,11 +241,11 @@
 			$scope.attendeeCheckIn = function (size,_attendee) {
 				$modal.open({
 					templateUrl: 'checkInPage.html',
-						controller: function($scope, $modalInstance, codeRED, attendee) {
-							$scope.attendee = attendee;
-							codeRED.getCheckedIn(attendee).then(function(checkedIn) {
-								$scope.boolIsCheckedIn = checkedIn;
-							});
+          controller: function($scope, $modalInstance, codeRED, attendee) {
+           $scope.attendee = attendee;
+           codeRED.getCheckedIn(attendee).then(function(checkedIn) {
+            $scope.boolIsCheckedIn = checkedIn;
+          });
 
 							//CHECK USER IN
 							$scope.didCheckIn = function(_attendee) {
@@ -190,10 +253,10 @@
 								.then(function(error,errorMessage) {
 									if (!error) {
 										$scope.boolIsCheckedIn = !$scope.boolIsCheckedIn;
-									    $timeout(function () {
-											$modalInstance.close(_attendee);
-										},1050);
-									} else {
+                   $timeout(function () {
+                     $modalInstance.close(_attendee);
+                   },1050);
+                 } else {
 										//TODO: pass back error message
 										console.log(errorMessage);
 									}
@@ -206,10 +269,10 @@
 								.then(function(error,errorMessage) {
 									if (!error) {
 										$scope.boolIsCheckedIn = !$scope.boolIsCheckedIn;
-									    $timeout(function () {
-											$modalInstance.close(_attendee);
-										},1050);
-									} else {
+                   $timeout(function () {
+                     $modalInstance.close(_attendee);
+                   },1050);
+                 } else {
 										//TODO: pass back error message
 										console.log(errorMessage);
 									}
@@ -217,7 +280,7 @@
 							};
 
 
-			 				$scope.cancel = function () {
+              $scope.cancel = function () {
 			 					//Dismiss modal
 			 					$modalInstance.dismiss('cancel');
 			 				};
@@ -229,11 +292,11 @@
 			 					return _attendee;
 			 				}
 			 			}
-		 		});
-			};
+         });
+};
 
-		}
-	};
+}
+};
 
 });
 
