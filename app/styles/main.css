@@ -79,10 +79,21 @@ html,
   .checkInIcon {
     color: #f45a66;
   }
+  .checkInIcon:hover {
+    color: #F59DA4;
+  }
+  .registerIcon {
+    color: #75df98;
+  }
+  .registerIcon:hover {
+    color: #9DE3B4;
+  }
   .feedIcon {
     color: #ee862d;
   }
-
+  .feedIcon:hover {
+    color: #EBAB75;
+  }
   /**
    * THUMBNAILS
    */
@@ -129,6 +140,10 @@ html,
     color: #f1a9a0;
   }
 
+  .schedulePadding {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
 /*
 
 ========================================================================== */

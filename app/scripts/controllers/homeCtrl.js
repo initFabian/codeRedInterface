@@ -3,87 +3,85 @@
 
 
 
- app.controller('HomeCtrl', function ($scope, $location, $http, $timeout, Auth, codeRED, user,$modal) {
+app.controller('HomeCtrl', function ($scope, $location, $http, $timeout, Auth, codeRED, user,$modal) {
 
- 	if (!user) {
- 		$location.path('/login');
- 	}
+  if (!user) {
+   $location.path('/login');
+ }
 
- 	$scope.searchQuery = '';
- 	$scope.attendees = codeRED.getAttendees();
- 	$scope.googleDocs = codeRED.getDocuments();
- 	$scope.sponsorDocs = codeRED.getSponsorDocs();
+ $scope.searchQuery = '';
+ $scope.attendees = codeRED.getAttendees();
+ $scope.googleDocs = codeRED.getDocuments();
+ $scope.sponsorDocs = codeRED.getSponsorDocs();
 
- 	$scope.initAnimation = true;
- 	$scope.isDashboard = true;
- 	$scope.isDatabase = false;
- 	$scope.isDocuments = false;
- 	$scope.isSponsors = false;
- 	$scope.isCheckIn = false;
- 	$scope.isFeed = false;
+ $scope.initAnimation = true;
+ $scope.isDashboard = true;
+ $scope.isDatabase = false;
+ $scope.isDocuments = false;
+ $scope.isSponsors = false;
+ $scope.isCheckIn = false;
+ $scope.isFeed = false;
 
- 	var notDashboard = function() {
- 		$scope.isDashboard = !$scope.isDashboard;
- 	};
+ var notDashboard = function() {
+   $scope.isDashboard = !$scope.isDashboard;
+ };
 
- 	$scope.notDatabase = function() {
- 		$scope.isDatabase = !$scope.isDatabase;
- 		notDashboard();
- 	};
+ $scope.notDatabase = function() {
+   $scope.isDatabase = !$scope.isDatabase;
+   notDashboard();
+ };
 
- 	$scope.notDocuments = function() {
- 		$scope.isDocuments = !$scope.isDocuments;
- 		notDashboard();
- 	};
+ $scope.notDocuments = function() {
+   $scope.isDocuments = !$scope.isDocuments;
+   notDashboard();
+ };
 
- 	$scope.notSponsors = function() {
- 		$scope.isSponsors = !$scope.isSponsors;
- 		notDashboard();
- 	};
+ $scope.notSponsors = function() {
+   $scope.isSponsors = !$scope.isSponsors;
+   notDashboard();
+ };
 
- 	$scope.notCheckIn = function() {
- 		$scope.isCheckIn = !$scope.isCheckIn;
- 		notDashboard();
- 	};
+ $scope.notCheckIn = function() {
+   $scope.isCheckIn = !$scope.isCheckIn;
+   notDashboard();
+ };
 
- 	$scope.notFeed = function() {
- 		$scope.isFeed = !$scope.isFeed;
- 		notDashboard();
- 	};
+ $scope.notFeed = function() {
+   $scope.isFeed = !$scope.isFeed;
+   notDashboard();
+ };
 
-  $scope.open = function (size) {
+ $scope.open = function (size) {
 
-    var modalInstance = $modal.open({
-      templateUrl: 'registerAttendee.html',
-      controller: function($scope, $modalInstance, $timeout, Auth, user) {
-
-        $scope.user = user;
-
-          //reset fields in modal
-          $scope.user.p1 = $scope.user.p2 =$scope.user.oldpword = '';
+  $modal.open({
+    templateUrl: 'registerAttendee.html',
+    controller: function($scope, $modalInstance, $timeout, codeRED) {
 
           //inital values for alert boxes in modal
           $scope.success = '';
           $scope.error = '';
 
-          $scope.updateUserAccount = function() {
+          $scope.submitAttendee = function() {
 
-            var _user = $scope.user;
+            var attendee = $scope.attendee;
 
-            //check if passwords match
-            if (_user.p1 !== _user.p2) {
-
+            //check if any fields blank
+            var fieldCheck = (attendee.name.length && attendee.school.length && attendee.phoneNumber.length && attendee.email.length && attendee.gender.length);
+            if (!fieldCheck) {
               //alert user 'Passwords dont match'
-              $scope.error = 'Passwords do not match!';
+              $scope.error = 'Oops! you must fill in all fields';
               return;
 
-            } else {
-              //set properties for Auth.updatePassword
-              _user.oldPassword = _user.oldpword;
-              _user.newPassword = _user.p1;
+            }
+            //do typeform mapping
+            var hash = {};
+            hash['Name?'] = attendee.name;
+            hash.Email = attendee.email;
+            hash['Gender?'] = (attendee.gender === 1) ? 'M' : 'F';
+            hash.phoneNumber = attendee.phoneNumber;
+            hash['School?'] = attendee.school;
 
-              //send update and wait for promise to return
-              Auth.updatePassword(_user).then(function(status){
+            codeRED.dayOfRegister(hash).then(function(status){
 
                 //Success!!
                 $scope.error = false;
@@ -100,7 +98,6 @@
                 $scope.success = false;
                 $scope.error = error.message.toString();
               });
-            }
           };
 
           $scope.cancel = function () {
@@ -109,19 +106,8 @@
             $modalInstance.dismiss('cancel');
           };
         },
-        size: size,
-        resolve: {
-          user: function () {
-            //send user in information
-            return Auth.resolveUser().password;
-          }
-        }
+        size: size
       });
-
-modalInstance.result.then(function (userInfo) {
-  console.log(userInfo);
-}, function () {
-});
 };
 })
 .directive('homePage', function() {
@@ -153,7 +139,7 @@ modalInstance.result.then(function (userInfo) {
 				console.log('error');
 			});
 
-      */
+*/
  			//Add delay so user can see initial animation
        $timeout(function () {
         $scope.attendees = codeRED.getAttendees();
@@ -163,9 +149,9 @@ modalInstance.result.then(function (userInfo) {
 				//remove slow animation to make searching faster
 				$scope.initAnimation = false;
       },850);
-    }
-  };
-})
+     }
+   };
+ })
 .directive('documentPage', function() {
 	return {
 		templateUrl: 'views/templates/documents.html',
@@ -213,8 +199,18 @@ modalInstance.result.then(function (userInfo) {
 
 .directive('feedPage', function() {
 	return {
-		templateUrl: 'views/templates/feed.html'
-	};
+		templateUrl: 'views/templates/feed.html',
+    controller: function($scope, $interval){
+      var satCollection = '2015-04-04 00:00:1';
+      var satDate = new Date(satCollection);
+      $scope.isSaturday = false;
+
+      $interval(function() {
+        $scope.currentTime = new Date();
+        $scope.isSaturday = ($scope.currentTime > satDate);
+      }, 1000);
+    }
+  };
 })
 
 .directive('checkInPage', function() {
@@ -250,33 +246,29 @@ modalInstance.result.then(function (userInfo) {
 							//CHECK USER IN
 							$scope.didCheckIn = function(_attendee) {
 								codeRED.checkIn(attendee)
-								.then(function(error,errorMessage) {
-									if (!error) {
+								.then(function() {
 										$scope.boolIsCheckedIn = !$scope.boolIsCheckedIn;
                    $timeout(function () {
                      $modalInstance.close(_attendee);
                    },1050);
-                 } else {
-										//TODO: pass back error message
-										console.log(errorMessage);
-									}
-								});
+								}, function(errorMessage){
+                    //TODO: pass back error message
+                    console.log(errorMessage);
+                });
 							};
 
 							//CHECK USER OUT
 							$scope.didCheckOut = function(_attendee) {
 								codeRED.notCheckIn(attendee)
-								.then(function(error,errorMessage) {
-									if (!error) {
-										$scope.boolIsCheckedIn = !$scope.boolIsCheckedIn;
+								.then(function() {
+                    $scope.boolIsCheckedIn = !$scope.boolIsCheckedIn;
                    $timeout(function () {
                      $modalInstance.close(_attendee);
                    },1050);
-                 } else {
-										//TODO: pass back error message
-										console.log(errorMessage);
-									}
-								});
+                }, function(errorMessage){
+                    //TODO: pass back error message
+                    console.log(errorMessage);
+                });
 							};
 
 

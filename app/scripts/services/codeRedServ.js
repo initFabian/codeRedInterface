@@ -18,8 +18,29 @@ app.factory('codeRED', function ($firebase, $q, FIREBASE_URL) {
     create: function (post) {
 
       //Add attendee
+      var deferred = $q.defer();
       var attendees = $firebase(ref.child('attendees')).$asArray();
-      return attendees.$add(post);
+       if(attendees.$add(post)){
+        // if(true){
+          console.log('registered: ',post);
+          deferred.resolve('Successfully registered attendee!');
+       } else {
+          deferred.reject('Oops! Something went wrong, try again');
+       }
+      return deferred.promise;
+    },
+    dayOfRegister: function (post) {
+
+      //Add attendee
+      var deferred = $q.defer();
+      var attendees = $firebase(ref.child('lateRegister')).$asArray();
+       if(attendees.$add(post)){
+          console.log('registered: ',post);
+          deferred.resolve('Successfully registered attendee!');
+       } else {
+          deferred.reject('Oops! Something went wrong, try again');
+       }
+      return deferred.promise;
     },
 
 
@@ -42,9 +63,10 @@ app.factory('codeRED', function ($firebase, $q, FIREBASE_URL) {
       var deferred = $q.defer();
 
       // Is the attendee in the checkIn list?
-      var ref = new Firebase(FIREBASE_URL).child('attendees/'+_attendee.$id+'/checkedIn');
+      var ref = new Firebase(FIREBASE_URL).child('checkedIn/'+_attendee.$id+'/checkedIn');
       ref.on('value', function(snapshot) {
         //returns either true or false
+        console.log(snapshot.val());
         deferred.resolve(snapshot.val());
       });
 
@@ -54,14 +76,22 @@ app.factory('codeRED', function ($firebase, $q, FIREBASE_URL) {
     checkIn: function (_attendee) {
       var deferred = $q.defer();
       //Add attendee checkIn
-      var ref = new Firebase(FIREBASE_URL).child('attendees/'+_attendee.$id+'/checkedIn');
+      var ref = new Firebase(FIREBASE_URL).child('checkedIn/'+_attendee.$id+'/checkedIn');
       ref.set(true,function(error) {
-        if (!error) {
-          // return false for the error
-          deferred.resolve(false);
-        } else {
+        if (error) {
           // return true for the error with error message
-          deferred.resolve(true,'There was an issue while removing check in.');
+          deferred.reject(true,'There was an issue while check in.');
+          console.log(error);
+        }
+      });
+      var attendRef = new Firebase(FIREBASE_URL).child('attendees/'+_attendee.$id+'/checkedIn');
+      attendRef.set(true,function(error) {
+        if (error) {
+          // return true for the error with error message
+          deferred.reject(true,'There was an issue while check in.');
+          console.log(error);
+        } else {
+          deferred.resolve();
         }
       });
       return deferred.promise;
@@ -71,14 +101,22 @@ app.factory('codeRED', function ($firebase, $q, FIREBASE_URL) {
       var deferred = $q.defer();
 
       //Remove attendee checkIn
-      var ref = new Firebase(FIREBASE_URL).child('attendees/'+_attendee.$id+'/checkedIn');
+      var ref = new Firebase(FIREBASE_URL).child('checkedIn/'+_attendee.$id+'/checkedIn');
       ref.set(null,function(error) {
-        if (!error) {
-          // return false for the error
-          deferred.resolve(false);
-        } else {
+        if (error) {
           // return true for the error with error message
-          deferred.resolve(true,'There was an issue while removing check in.');
+          deferred.reject(true,'There was an issue while removing check in.');
+          console.log(error);
+        }
+      });
+      var attendRef = new Firebase(FIREBASE_URL).child('attendees/'+_attendee.$id+'/checkedIn');
+      attendRef.set(null,function(error) {
+        if (error) {
+          // return true for the error with error message
+          deferred.reject(true,'There was an issue while removing check in.');
+          console.log(error);
+        } else {
+          deferred.resolve();
         }
       });
       return deferred.promise;
