@@ -87,7 +87,11 @@
         <input type="radio" name="optradio" ng-model="attendee.gender" value="female" required>Female
       </label>
       <br>
-
+      <div class="checkbox">
+                <label>
+                <input type="checkbox" ng-model="attendee['acceptedTerms']" required> Accept our <a href="https://drive.google.com/file/d/0B1RKnwl1Fy0OS1RMUm5WYUVtMk0/view">terms and condition</a>
+                </label>
+            </div>
     </div>
     <div class="modal-footer">
       <input type="submit" value="Submit" class="btn btn-primary" ng-disabled="!registerStudentForm.$valid"/>

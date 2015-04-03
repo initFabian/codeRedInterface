@@ -79,6 +79,7 @@ app.controller('HomeCtrl', function ($scope, $location, $http, $timeout, Auth, c
             hash.Email = attendee.email;
             hash['Gender?'] = (attendee.gender === 1) ? 'M' : 'F';
             hash.phoneNumber = attendee.phoneNumber;
+            hash.acceptedTerms = attendee.acceptedTerms;
             hash['School?'] = attendee.school;
 
             codeRED.dayOfRegister(hash).then(function(status){
@@ -126,20 +127,19 @@ app.controller('HomeCtrl', function ($scope, $location, $http, $timeout, Auth, c
 			$scope.initAnimation = true;
 			$scope.attendees = [];
 
-			/*
+      /*
 			// use this for loop to add recently exported database
-			$http.get('hackathon.json').
-			success(function(data) {
-				console.log('hacathon stuff');
+			$http.get('hackathon.json').success(function(data) {
 				for (var x = data.length - 1; x >= 0; x--) {
-					codeRED.create(data[x]);
+					// console.log(data[x]);
+          codeRED.create(data[x]);
 				}
-			}).
-			error(function(data) {
-				console.log('error');
+			}).error(function(data) {
+				console.log('error: ', data);
 			});
+      */
 
-*/
+
  			//Add delay so user can see initial animation
        $timeout(function () {
         $scope.attendees = codeRED.getAttendees();

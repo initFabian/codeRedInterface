@@ -90,6 +90,14 @@ app.factory('codeRED', function ($firebase, $q, FIREBASE_URL) {
           // return true for the error with error message
           deferred.reject(true,'There was an issue while check in.');
           console.log(error);
+        }
+      });
+      var termRef = new Firebase(FIREBASE_URL).child('attendees/'+_attendee.$id+'/acceptedTerms');
+      termRef.set(true,function(error) {
+        if (error) {
+          // return true for the error with error message
+          deferred.reject(true,'There was an issue while check in.');
+          console.log(error);
         } else {
           deferred.resolve();
         }
@@ -115,10 +123,20 @@ app.factory('codeRED', function ($firebase, $q, FIREBASE_URL) {
           // return true for the error with error message
           deferred.reject(true,'There was an issue while removing check in.');
           console.log(error);
+        }
+      });
+
+      var termRef = new Firebase(FIREBASE_URL).child('attendees/'+_attendee.$id+'/acceptedTerms');
+      termRef.set(null,function(error) {
+        if (error) {
+          // return true for the error with error message
+          deferred.reject(true,'There was an issue while check in.');
+          console.log(error);
         } else {
           deferred.resolve();
         }
       });
+
       return deferred.promise;
     },
 
